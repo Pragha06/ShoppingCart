@@ -1,13 +1,13 @@
+import java.util.List;
 
-public class ShoppingCart {
+public class ShoppingCartItems {
 
-  private Product name;
+  private String name;
   private int quantity;
   private double price;
   private double totalPrice;
 
-
-  public ShoppingCart(Product name, int quantity, double price, double totalPrice) {
+  public ShoppingCartItems(String name, int quantity, double price, double totalPrice) {
     this.name=name;
     this.quantity=quantity;
     this.price=price;
@@ -17,6 +17,7 @@ public class ShoppingCart {
   public double getTotalPrice() {
     return totalPrice;
   }
+
 
 
 }

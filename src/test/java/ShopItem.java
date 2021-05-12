@@ -1,5 +1,5 @@
-import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.Assert;
 
 public class ShopItem {
 
@@ -7,22 +7,36 @@ public class ShopItem {
     @Test
     public void testShopItems()
     {
-        Items apple = new Items(Product.Apple, 100, 10);
-        Items milk = new Items(Product.Milk, 40, 15);
-        Items newsPaper = new Items(Product.NewsPaper, 100, 2.50);
+        Apple apple = new Apple("Apple", 100, 10.00);
+        Milk milk = new Milk("Milk", 40, 15.00);
+        NewsPaper newsPaper = new NewsPaper("NewsPaper", 100, 2.50);
 
-        Customer pragha=new Customer("Pragha",700.00);
+        Wallet ewallet=new Wallet(700.00);
+        Customer pragha=new Customer("Pragha",ewallet);
 
-        pragha.addToCart(new ShoppingCart(Product.Apple,10,apple.getPrice(),apple.getPrice()*10));
-        pragha.addToCart(new ShoppingCart(Product.Milk,3,milk.getPrice(),milk.getPrice()*3));
-        pragha.addToCart(new ShoppingCart(Product.NewsPaper,1,newsPaper.getPrice(),newsPaper.getPrice()*1));
+        pragha.addToCart(new ShoppingCartItems("Apple",5,apple.getPrice(),apple.getPrice()*5));
+        pragha.addToCart(new ShoppingCartItems("Milk",3,milk.getPricePerLitre(),milk.getPricePerLitre()*3));
+        pragha.addToCart(new ShoppingCartItems("NewsPaper",1,newsPaper.getPrice(),newsPaper.getPrice()*1));
 
-        double totalCartPrice=pragha.calculateTotalCartPrice();
-        double eWalletBalance=pragha.payFromEWallet(totalCartPrice);
+        pragha.payFromEWallet();
+        Assert.assertEquals(ewallet.getBalance(),602.5);
+    }
 
-        Assert.assertEquals(totalCartPrice,147.50);
-        Assert.assertEquals(eWalletBalance,552.50);
+    @Test
+    public void noBalanceInWallet()
+    {
+        Apple apple = new Apple("Apple", 100, 10.00);
+        Milk milk = new Milk("Milk", 40, 15.00);
+        NewsPaper newsPaper = new NewsPaper("NewsPaper", 100, 2.50);
 
+        Wallet ewallet=new Wallet(50.00);
+        Customer pragha=new Customer("Pragha",ewallet);
+
+        pragha.addToCart(new ShoppingCartItems("Apple",5,apple.getPrice(),apple.getPrice()*5));
+        pragha.addToCart(new ShoppingCartItems("Milk",3,milk.getPricePerLitre(),milk.getPricePerLitre()*3));
+        pragha.addToCart(new ShoppingCartItems("NewsPaper",1,newsPaper.getPrice(),newsPaper.getPrice()*1));
+
+        pragha.payFromEWallet();
     }
 
 }

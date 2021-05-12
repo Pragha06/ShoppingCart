@@ -1,34 +1,43 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Customer {
+public class Customer implements ICustomer{
 
     private String name;
-    private double eWalletMoney;
-    private List<ShoppingCart> cartItems;
+    private Wallet ewallet;
+    private List<ShoppingCartItems> cartItems;
+    ShoppingCartItems cart;
 
-    public Customer(String name, double ewalletMoney) {
+    public Customer(String name, Wallet ewallet) {
         this.name=name;
-        this.eWalletMoney=ewalletMoney;
+        this.ewallet=ewallet;
         this.cartItems=new ArrayList<>();
     }
 
 
-    public void addToCart(ShoppingCart itemsToCart) {
+    @Override
+    public void addToCart(ShoppingCartItems itemsToCart) {
 
         cartItems.add(itemsToCart);
     }
 
+    @Override
+    public void payFromEWallet() {
 
-    public double payFromEWallet(double totalCartPrice) {
+        double priceToBePaid=calculateTotalCartPrice();
+        double eWalletBalance=ewallet.getBalance();
 
-        eWalletMoney=eWalletMoney-totalCartPrice;
-        return eWalletMoney;
+        if(eWalletBalance>priceToBePaid) {
+            ewallet.deductMoney(priceToBePaid);
+        }
+        else
+            System.out.println("Not enough balance in e-wallet");
     }
 
     public double calculateTotalCartPrice()
     {
-        return cartItems.stream().map(ShoppingCart::getTotalPrice).reduce(0.0,Double::sum);
+        return cartItems.stream().map(ShoppingCartItems::getTotalPrice).reduce(0.0,Double::sum);
     }
+
 
 }
